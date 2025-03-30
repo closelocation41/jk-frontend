@@ -1,0 +1,63 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">My Blog</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-outline-light rounded-pill px-3" routerLink="/dashboard">Dashboard</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Blog Form -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form [formGroup]="blogForm" class="p-4 border rounded-3 shadow-lg bg-white">
+        <h3 class="text-center text-primary mb-4">Create a New Blog Post</h3>
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold">Title</label>
+          <input type="text" class="form-control rounded-pill" formControlName="title" placeholder="Enter Title" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Content</label>
+          <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+          <ngx-editor
+            [editor]="editor"
+            data-testid="sample-input-hover-click"
+            [placeholder]="'Type Content here...'"
+            formControlName="body"
+            class="border p-2 rounded"
+          ></ngx-editor>
+        </div>
+
+        <div formGroupName="category" class="mb-3">
+          <label class="form-label fw-bold">Category</label>
+          <input type="text" class="form-control rounded-pill" formControlName="name" placeholder="Enter Category" />
+        </div>
+
+        <div formArrayName="tags" class="mb-3">
+          <label class="form-label fw-bold">Tags</label>
+          <div *ngFor="let user of tags.controls; index as idx" class="d-flex align-items-center gap-2">
+            <div [formGroupName]="idx" class="flex-grow-1">
+              <input class="form-control rounded-pill" formControlName="name" placeholder="Enter Tag" />
+            </div>
+          </div>
+          <button (click)="addTag()" class="btn btn-success btn-sm mt-2" type="button">+ Add Tag</button>
+        </div>
+
+        <div class="text-center">
+          <button (click)="createPost()" class="btn btn-primary px-4 rounded-pill" type="submit">Submit Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

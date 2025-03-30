@@ -1,0 +1,75 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">My Blog</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-outline-light rounded-pill px-3 me-2" routerLink="/new-post">Create New Post</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-danger rounded-pill px-3" href="javascript:void(0)" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Blog List -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="mb-4 text-center fw-bold">Latest Blogs</h2>
+
+      <div class="">
+        <div class="mb-4" *ngFor="let post of items$ | async">
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+              <h3 class="card-title">
+                <a class="text-success text-decoration-none fw-bold" [routerLink]="['/post', post.slug]">
+                  {{ post.title }}
+                </a>
+              </h3>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <b *ngIf="post.category" class="badge bg-secondary px-3 py-2">{{ post.category.name }}</b>
+                <div>
+                  <span *ngIf="post.author" class="text-muted">By {{ post.author.name }}</span>
+                  <span class="text-muted ms-2">{{ post.timestamp | date: "medium" }}</span>
+                </div>
+              </div>
+              <div class="mb-2">
+                <span *ngFor="let tag of post.tags" class="badge bg-info text-dark me-1">{{ tag.name }}</span>
+              </div>
+              <hr />
+              <div [innerHTML]="post.body | truncate:600 | safeHtml" class="fs-6 text-muted">...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="text-center my-3" *ngIf="isLoading">
+          <div class="spinner-border text-primary"></div>
+        </div>
+
+        <!-- No More Posts Message -->
+        <div class="text-center text-muted mt-3" *ngIf="!isLoading && (items$ | async)?.length === 0">
+          No blogs found.
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-center mt-4">
+          <button class="btn btn-outline-secondary me-2" (click)="prevPage()" [disabled]="currentPage === 1">
+            ← Previous
+          </button>
+          <span class="align-self-center mx-2">Page {{ currentPage }}</span>
+          <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="!hasMore">
+            Next →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
