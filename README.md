@@ -1,27 +1,117 @@
-# MyblogUi
+# JK Project Setup Guide
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.6.
+## Prerequisites
+Before setting up the project, ensure the following prerequisites are met:
 
-## Development server
+- Create a **Google Auth Client** and generate secret keys.
+- Install [MongoDB](https://www.mongodb.com/try/download/community).
+- Create a `.env` file and copy all data from `example.env`.
+- Update AWS secrets.
+- Update Google authentication keys.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## Local Setup
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Clone the repositories
+```sh
+git clone https://github.com/closelocation41/jk-backend.git
 
-## Build
+git clone https://github.com/closelocation41/jk-frontend.git
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 1) Local Setup Without Docker
 
-## Running unit tests
+#### Backend Setup (NestJS)
+Navigate to the backend directory:
+```sh
+cd jk-backend
+```
+Install dependencies:
+```sh
+npm install
+```
+Create and configure `.env` file:
+```sh
+cp example.env .env
+```
+Start the development server:
+```sh
+npm run start:dev
+```
+Backend will be available at `http://localhost:3000`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+#### Frontend Setup (Angular)
+Navigate to the frontend directory:
+```sh
+cd ../jk-frontend
+```
+Install dependencies:
+```sh
+npm install
+```
+Start the development server:
+```sh
+npm run start
+```
+Frontend will be available at `http://localhost:4200`
 
-## Running end-to-end tests
+Login with Google authentication.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+### 2) Local Setup With Docker
+Clone repositories:
+```sh
+git clone https://github.com/closelocation41/jk-backend.git
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+git clone https://github.com/closelocation41/jk-frontend.git
+
+git clone https://github.com/closelocation41/jk-blog-app.git
+```
+
+Build the Docker images:
+```sh
+docker-compose build
+```
+Run Docker Compose:
+```sh
+docker-compose up -d
+```
+Ensure `docker-compose.yml` is correctly configured:
+```sh
+https://github.com/closelocation41/jk-blog-app
+```
+
+---
+
+### 3) AWS ECR Setup
+
+#### Create AWS ECR Repository
+Create an ECR repository for `jk-backend` and `jk-frontend` in AWS.
+
+#### Clone Repositories
+```sh
+git clone https://github.com/closelocation41/jk-backend.git
+
+git clone https://github.com/closelocation41/jk-frontend.git
+
+git clone https://github.com/closelocation41/jk-blog-app.git
+```
+
+#### Build and Push Images to AWS ECR
+Build Docker images for `jk-backend` and `jk-frontend`, then push them to AWS ECR.
+
+#### Setup EC2 Instance and Deploy GitHub Action Runner
+- Create an **EC2 instance**.
+- Deploy **self-hosted GitHub Action Runner**.
+- Update **ECR repository URLs** in `docker-compose.yml`.
+- Deploy GitHub workflow.
+
+Create and configure `.env` file:
+```sh
+cp example.env .env
+```
+
+Now your project is set up for local development and AWS deployment! 🚀
+
